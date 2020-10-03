@@ -1,5 +1,5 @@
 public class Solution {
-    public bool IsAnagram(string s, string t) {
+    public bool IsAnagram(string s, string t ) {
         
         var freqArray = new int[26];
         
