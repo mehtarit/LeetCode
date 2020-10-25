@@ -2,49 +2,51 @@ public class Solution {
     public string DecodeString(string s) {
         
         var counts = new Stack<int>();
-        var codes = new Stack<string>();
-        
+        var result = new Stack<string>();
+        string current = "";
         int index = 0;
-        string result = "";
         
-        while(index < s.Length)
-        {
-            var current = s[index];
+        while(index < s.Length){
             
-            if(Char.IsNumber(current)){
-                int previousDigit = 0;
-                int number = 0;
-                while(Char.IsNumber(current))
-                {
-                    number = 10*previousDigit + (current-'0');
-                    previousDigit = number;
-                    index++;
-                    current = s[index];
-                }
-                counts.Push(number);
-            }
-            else if(current == '['){
-                codes.Push(result);
-                result="";
-                index++;
+            if(Char.IsDigit(s[index])){
                 
+                int count = 0;
+                while(Char.IsDigit(s[index])){
+                    count = count*10 + (s[index] - '0');
+                    index++;
+                }
+                
+                counts.Push(count);
             }
-            else if(current == ']'){
-                string temp = codes.Pop();              
+            
+            else if(s[index] == '[') {
+                
+                result.Push(current);
+                current = "";
+                index++;
+            }
+            
+            else if(s[index] == ']'){
+                
+                StringBuilder temp = new StringBuilder(result.Pop());
                 int count = counts.Pop();
                 for(int i = 0; i < count; i++){
-                    temp = temp + result;
+                    temp.Append(current);
                 }
-                result = temp;
-                index++;               
+                current = temp.ToString();
+                index++;
             }
+            
             else {
-                result = result + Char.ToString(current);
-                index++;                
+                
+                current = current+s[index];
+                index++;
+                
             }
             
         }
         
-        return result;
+        return current;
+        
     }
 }
