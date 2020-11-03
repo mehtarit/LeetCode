@@ -1,41 +1,40 @@
 public class Solution {
     public string GetHint(string secret, string guess) {
         
+        var freqArr = new int[10];      
+        foreach(var c in secret){
+            int n = c-'0';          
+            freqArr[n]++;
+        }
         
+        //FindBulls      
+        var set = new HashSet<int>();  
         
-       var freqArr = new int[10];
-       foreach(var c in secret){
-           int digit = c-'0';
-           freqArr[digit]++;
-       }
-       
-        int bullCount = 0;
-        int cowCount = 0;
-        
-        var set = new HashSet<int>();
-        for(int i = 0; i < guess.Length; i++)
-        {
-            var current = guess[i]-'0';
-            if(current == (secret[i]-'0')) {
-                bullCount++;
-                freqArr[current]--;
+        for(int i =0; i < guess.Length; i++){      
+            if(guess[i] == secret[i]) {
                 set.Add(i);
-                continue;
-            }            
+                var n = secret[i] - '0';
+                freqArr[n]--;
+            }           
+        }
+        
+        int cows = 0;       
+        for(int i=0; i<guess.Length; i++)
+        {
+            if(set.Contains(i)) continue;
+            
+            int n = guess[i] - '0';
+            if(freqArr[n] > 0) {
+                freqArr[n]--;
+                cows++;
+            }
             
         }
         
-        for(int i = 0; i < guess.Length; i++)
-        {
-            if(set.Contains(i)) continue;
-            var current = guess[i]-'0';
-            if(freqArr[current] > 0) cowCount++;
-            freqArr[current]--;
-        }
+        return $"{set.Count}A{cows}B";
         
         
         
-        return $"{bullCount}A{cowCount}B";
         
     }
 }
