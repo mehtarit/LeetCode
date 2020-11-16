@@ -1,49 +1,48 @@
 public class RandomizedSet {
+    
+    Dictionary<int, int> _map;
+    List<int> _set;
+    Random rand;
 
     /** Initialize your data structure here. */
-    Dictionary<int, int> _indexMap;
-    List<int> _set;
-    
     public RandomizedSet() {
         
-        _indexMap = new Dictionary<int, int>();
+        _map = new Dictionary<int, int>();
         _set = new List<int>();
+        rand = new Random();
         
     }
     
     /** Inserts a value to the set. Returns true if the set did not already contain the specified element. */
     public bool Insert(int val) {
         
-        if(_indexMap.ContainsKey(val)) return false;
+        if(_map.ContainsKey(val)) return false;
         _set.Add(val);
-        _indexMap.Add(val, _set.Count -1);
+        _map.Add(val, _set.Count-1);
         return true;
-        
     }
     
     /** Removes a value from the set. Returns true if the set contained the specified element. */
     public bool Remove(int val) {
-                
-        if(!_indexMap.ContainsKey(val)) return false;
         
-        var index = _indexMap[val];
+        if(!_map.ContainsKey(val)) return false;
+        var currentIndex = _map[val];
+        var last = _set[_set.Count-1];
         
-        var lastElement = _set[_set.Count-1];
-        _set[index] = lastElement;
+        _map[last] = currentIndex;
+        _set[currentIndex] = last;
         _set[_set.Count-1] = val;
-               
-        _indexMap[lastElement] = index;
+        
+        _map.Remove(val);
         _set.RemoveAt(_set.Count-1);
-        _indexMap.Remove(val);
         return true;
         
     }
     
     /** Get a random element from the set. */
     public int GetRandom() {
-                
-        var random = new Random();
-        var randomIndex = random.Next(_set.Count);
+        
+        var randomIndex = rand.Next(_set.Count);
         return _set[randomIndex];
         
     }
