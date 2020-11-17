@@ -8,7 +8,7 @@ public class Solution {
 
         if(!visited.ContainsKey(endWord)) return 0;
         
-      //  Console.WriteLine("here3");
+
         var allCombos = new Dictionary<string, List<string>>();
         
         foreach(var s in wordList){
@@ -18,7 +18,6 @@ public class Solution {
                 sArray[i] = '*';
                 var intermediate = new string(sArray);
                 
-              //  Console.WriteLine("Creating intermediate: " + intermediate);
                 sArray[i] = s[i];
                 if(allCombos.ContainsKey(intermediate)) 
                 {
@@ -38,8 +37,6 @@ public class Solution {
             var front = adjacentQ.Dequeue();
             var current = front.Item1;
             
-           // Console.WriteLine("Current word is: " + current);
-            
             if(visited[current]) continue;
             if(current == endWord) return front.Item2;
             
@@ -48,12 +45,11 @@ public class Solution {
             for(int i = 0; i < front.Item1.Length; i++){
                 sArray[i] = '*';
                 var s = new string(sArray);
-             //   Console.WriteLine("Considering intermediate word " + s);
+
                 if(allCombos.ContainsKey(s)){
                     var possibleNextWords = allCombos[s];
                     foreach(var word in possibleNextWords){
                         adjacentQ.Enqueue(Tuple.Create(word, front.Item2 + 1));
-                 //       Console.WriteLine("Adding similar word " + word + " to the queue");
                     }
                 }
                 sArray[i] = current[i]; 
