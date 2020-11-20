@@ -28,9 +28,7 @@ public class Solution {
             for(int i =0; i<=end; i++){
                 
                 var current = s.Substring(i, slidingWindow);
-                //Console.WriteLine("Current is: " + current);
                 if(IsUnique(current)) {
-                //Console.WriteLine("Breaking");
                 return slidingWindow;}
                 
             }
